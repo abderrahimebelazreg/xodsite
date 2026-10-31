@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#09090d">
+  <meta name="description" content="A home for small, useful apps. Explore projects and download the latest releases.">
+  <title>Studio — Apps & tools</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Studio home">
+      <span class="brand-mark">S<span>.</span></span>
+      <span class="brand-name">STUDIO<span class="brand-slash">/</span>APPS</span>
+    </a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="#apps">Explore</a>
+      <a href="#about">About</a>
+      <a class="github-link" href="https://github.com/abderrahimebelazreg" target="_blank" rel="noreferrer">
+        GitHub <span aria-hidden="true">↗</span>
+      </a>
+    </nav>
+    <button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false"><span></span><span></span></button>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-copy reveal">
+        <div class="eyebrow"><span class="live-dot"></span> INDEPENDENT SOFTWARE · BUILT WITH CARE</div>
+        <h1>Small apps.<br><span class="gradient-text">Big ideas.</span></h1>
+        <p class="hero-description">A collection of tools made to be useful, fast, and thoughtfully designed. Find something you like and make it yours.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#apps">Explore apps <span>↓</span></a>
+          <a class="button button-quiet" href="https://github.com/abderrahimebelazreg" target="_blank" rel="noreferrer">View GitHub <span>↗</span></a>
+        </div>
+        <div class="hero-footnote"><span class="tiny-star">✳</span> Open source projects · Releases hosted on GitHub</div>
+      </div>
+      <div class="hero-art reveal" aria-label="Decorative application window">
+        <div class="orbit orbit-a"></div><div class="orbit orbit-b"></div>
+        <div class="hero-glow"></div>
+        <div class="mock-window">
+          <div class="window-top"><div class="window-dots"><i></i><i></i><i></i></div><span>YOUR NEXT FAVORITE APP</span><span class="window-more">···</span></div>
+          <div class="mock-content">
+            <div class="mock-icon"><img src="assets/xod.png" alt="" onerror="this.src='assets/xod-fallback.svg'"></div>
+            <div class="mock-label">FEATURED PROJECT</div>
+            <div class="mock-title">XOD<span class="mock-cursor"></span></div>
+            <div class="mock-subtitle">A small modal GUI text editor.</div>
+            <div class="mock-lines"><i></i><i></i><i></i></div>
+            <div class="mock-bottom"><span>RUST · DESKTOP</span><span class="mock-status"><b></b> OPEN SOURCE</span></div>
+          </div>
+        </div>
+        <div class="floating-chip chip-top"><span>✦</span> Made for makers</div>
+        <div class="floating-chip chip-bottom"><span class="chip-dot"></span> Latest releases from GitHub</div>
+      </div>
+    </section>
+
+    <section class="ticker" aria-label="Site highlights">
+      <div class="ticker-track"><span>INDEPENDENT TOOLS</span><b>✳</b><span>OPEN SOURCE</span><b>✳</b><span>BUILT WITH PURPOSE</span><b>✳</b><span>INDEPENDENT TOOLS</span><b>✳</b><span>OPEN SOURCE</span><b>✳</b><span>BUILT WITH PURPOSE</span><b>✳</b></div>
+    </section>
+
+    <section class="apps-section" id="apps">
+      <div class="section-heading reveal">
+        <div><div class="eyebrow">THE COLLECTION</div><h2>Explore the <span class="gradient-text">apps.</span></h2></div>
+        <div class="section-side"><span id="app-count">01 PROJECT</span><span class="heading-line"></span><span class="mono-muted">UPDATED AUTOMATICALLY</span></div>
+      </div>
+      <div class="toolbar reveal">
+        <label class="search-box"><span>⌕</span><input id="search-input" type="search" placeholder="Find an app..." autocomplete="off"></label>
+        <div class="filter-group" role="group" aria-label="Filter apps">
+          <button class="filter-button active" data-filter="all">All apps</button>
+          <button class="filter-button" data-filter="desktop">Desktop</button>
+          <button class="filter-button" data-filter="utility">Utilities</button>
+        </div>
+      </div>
+      <div class="app-grid" id="app-grid" aria-live="polite">
+        <article class="app-card skeleton"><div class="skeleton-icon"></div><div class="skeleton-line"></div><div class="skeleton-line short"></div></article>
+      </div>
+      <div class="empty-state" id="empty-state" hidden>No apps match that search. Try another name.</div>
+    </section>
+
+    <section class="about-section" id="about">
+      <div class="about-symbol">✳</div>
+      <div class="about-copy reveal"><div class="eyebrow">WHY THIS EXISTS</div><h2>Useful software,<br><span class="gradient-text">without the noise.</span></h2><p>This is the home for my little software projects. Each app has its own personality, purpose, and source code. Downloads are delivered directly from GitHub — no extra hosting, no mystery links.</p></div>
+      <a class="about-link reveal" href="https://github.com/abderrahimebelazreg" target="_blank" rel="noreferrer"><span>Explore the source</span><b>↗</b></a>
+    </section>
+  </main>
+
+  <footer class="footer"><a class="brand" href="#"><span class="brand-mark">S<span>.</span></span><span class="brand-name">STUDIO<span class="brand-slash">/</span>APPS</span></a><span>DESIGNED TO BE USEFUL. BUILT TO BE SHARED.</span><span>© <span id="year"></span></span></footer>
+  <div class="toast" id="toast" role="status"></div>
+</body>
+</html>
