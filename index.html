@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090a0d">
+  <meta name="description" content="Studio / Apps — Native, open-source desktop applications and utilities. Pure performance, zero subscriptions, crafted with care.">
+  <title>Studio / Apps — Capable tools for artists &amp; developers</title>
+
+  <!-- Typography: Instrument Serif, Inter, and JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="ambient-mesh" aria-hidden="true"></div>
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <!-- Header / Topbar Navigation -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html" aria-label="Studio Apps Home">
+        <img src="assets/logoOfwebsite.png" alt="Studio Logo" class="brand-logo-img">
+        <div class="brand-title">STUDIO <span>/ APPS</span></div>
+      </a>
+
+      <nav class="nav-links" id="main-nav" aria-label="Main Navigation">
+        <a class="nav-item" href="#apps"><span class="index">01/</span>Apps</a>
+        <a class="nav-item" href="#features"><span class="index">02/</span>Features</a>
+        <a class="nav-item" href="#spotlight"><span class="index">03/</span>Spotlight</a>
+        <a class="nav-item" href="admin.html"><span class="index">04/</span>Admin</a>
+        <a class="nav-cta" href="https://github.com/abderrahimebelazreg" target="_blank" rel="noreferrer">
+          <span>GitHub</span>
+          <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M3.5 10.5L10.5 3.5M10.5 3.5H4.5M10.5 3.5V9.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </nav>
+
+      <button class="menu-toggle" aria-label="Toggle Navigation Menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero reveal">
+      <div class="hero-meta">
+        <div class="hud-tag">
+          <span class="badge-dot"></span>
+          <span>00 / INDEPENDENT SOFTWARE &middot; CRAFTED IN RUST</span>
+        </div>
+      </div>
+
+      <h1 class="hero-title">
+        Independent tools.<br>
+        <span class="editorial-serif">One craft.</span>
+      </h1>
+
+      <p class="hero-subhead">
+        Native, open-source desktop apps and focused utilities. Built for creators who crave speed, direct control, and zero telemetry. No subscriptions required.
+      </p>
+
+      <div class="hero-badges">
+        <div class="badge-item"><span class="badge-dot"></span> macOS &middot; Windows &middot; Linux</div>
+        <div class="badge-item">100% Free &amp; Open Source</div>
+        <div class="badge-item">Zero Cloud Lock-in</div>
+        <div class="badge-item">Compiled Native Binaries</div>
+      </div>
+
+      <div class="hero-actions">
+        <a class="btn-primary" href="#apps">
+          <span>Explore apps</span>
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 3V13M8 13L13 8M8 13L3 8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a class="btn-secondary" href="https://github.com/abderrahimebelazreg" target="_blank" rel="noreferrer">
+          <span>View on GitHub</span>
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M4 12L12 4M12 4H6M12 4V10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+
+      <!-- Hero Interactive Dock (Dynamically generated from SQLite apps) -->
+      <div class="hero-dock-wrapper" id="hero-dock-card">
+        <div class="hero-dock-header">Select an application to explore</div>
+        <div class="hero-dock" id="hero-dock">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 01: The Collection (Crafting Apps) -->
+    <section class="section-wrapper reveal" id="apps">
+      <div class="section-header">
+        <div class="hud-tag">
+          <span class="bullet">&block;</span>
+          <span>01 / CRAFTING APPS &middot; PURE RUST</span>
+        </div>
+        <h2 class="section-title">Native apps built for focus.</h2>
+        <p class="section-desc">
+          Single-purpose software engineered for low latency, negligible RAM usage, and instant startup. Download standalone binaries directly from GitHub releases.
+        </p>
+      </div>
+
+      <div class="collection-toolbar">
+        <div class="search-box-pro">
+          <svg class="search-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5"/>
+            <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+          <input type="search" id="search-input" placeholder="Search by name, tag, or description..." autocomplete="off">
+        </div>
+
+        <div class="filter-group" id="filter-group" role="group" aria-label="Filter applications">
+          <button class="filter-pill active" data-filter="all">All apps</button>
+          <button class="filter-pill" data-filter="desktop">Desktop</button>
+          <button class="filter-pill" data-filter="utility">Utilities</button>
+          <button class="filter-pill" data-filter="editor">Editor</button>
+        </div>
+
+        <div class="toolbar-counter" id="app-count">01 / 01 APPS</div>
+      </div>
+
+      <!-- App Grid -->
+      <div class="app-grid" id="app-grid" aria-live="polite">
+        <!-- Rendered via JavaScript from SQLite database -->
+      </div>
+
+      <div class="empty-state" id="empty-state" hidden>
+        No applications match your search query. Try searching for "editor", "Rust", or "utility".
+      </div>
+    </section>
+
+    <!-- Section 02: Studio Features / Philosophy -->
+    <section class="section-wrapper reveal" id="features">
+      <div class="section-header">
+        <div class="hud-tag">
+          <span class="bullet">&block;</span>
+          <span>02 / STUDIO FEATURES &middot; REAL PERFORMANCE</span>
+        </div>
+        <h2 class="section-title">The control that mere words cannot buy.</h2>
+        <p class="section-desc">
+          Stop renting from websites. Experience tools designed for speed, local ownership, and distraction-free creation.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <article class="feature-box">
+          <span class="feature-num">01 / PERFORMANCE</span>
+          <h3>Native Speed &amp; Efficiency</h3>
+          <p>Engineered in Rust with direct GPU drawing. Boots in milliseconds, sips memory, and never freezes your desktop under heavy multi-tasking workloads.</p>
+        </article>
+
+        <article class="feature-box">
+          <span class="feature-num">02 / PRIVACY</span>
+          <h3>Zero Telemetry</h3>
+          <p>Completely free of telemetry daemons, tracking pixels, and user profiling. Your files, keystrokes, and source code stay private on your local machine.</p>
+        </article>
+
+        <article class="feature-box">
+          <span class="feature-num">03 / OWNERSHIP</span>
+          <h3>Stop Renting Software</h3>
+          <p>No monthly subscription fees, license expiring popups, or cloud servers that can disappear tomorrow. You own the binary and keep it forever.</p>
+        </article>
+
+        <article class="feature-box">
+          <span class="feature-num">04 / MODAL FLOW</span>
+          <h3>Keyboard-First Workflow</h3>
+          <p>Carefully crafted keybinding layers, modal command ergonomics, and vim-like efficiency keep your hands glued to the keyboard and in flow state.</p>
+        </article>
+
+        <article class="feature-box">
+          <span class="feature-num">05 / DIRECT RELEASES</span>
+          <h3>Automated GitHub Assets</h3>
+          <p>Every commit is verified and packaged by automated CI. Download verified native AppImage, deb, dmg, and tarballs straight from GitHub Releases.</p>
+        </article>
+
+        <article class="feature-box">
+          <span class="feature-num">06 / OPEN SOURCE</span>
+          <h3>Transparent &amp; Hackable</h3>
+          <p>Every line of code is open source under permissive licenses. Audit the implementation, fork the repository, or customize features to your exact taste.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Section 03: Featured Spotlight (XOD Editor) -->
+    <section class="section-wrapper reveal" id="spotlight">
+      <div class="section-header">
+        <div class="hud-tag">
+          <span class="bullet">&block;</span>
+          <span>03 / SPOTLIGHT &middot; FEATURED APPLICATION</span>
+        </div>
+        <h2 class="section-title">XOD &mdash; <span class="editorial-serif">Modal GUI Text Editor.</span></h2>
+        <p class="section-desc">
+          A small, ultra-fast modal text editor built with Rust and Iced. Switch themes, stay focused, and edit with modal precision.
+        </p>
+      </div>
+
+      <div class="spotlight-card">
+        <div class="spotlight-content">
+          <div class="hud-tag"><span class="badge-dot"></span> PURE RUST &middot; ICED GUI</div>
+          <h3>Distraction-free editing, at native speed.</h3>
+          <p>
+            XOD eliminates bloated Electron runtimes in favor of a lean, native Rust window with instant keystroke response, smooth rendering, and modular configuration.
+          </p>
+
+          <div class="theme-selector-box">
+            <div class="theme-selector-label">Live Preview Theme:</div>
+            <div class="theme-chips">
+              <button class="theme-chip active" data-theme="obsidian">Obsidian Dark</button>
+              <button class="theme-chip" data-theme="emerald">Emerald Slate</button>
+              <button class="theme-chip" data-theme="amber">Amber Monokai</button>
+              <button class="theme-chip" data-theme="nordic">Nordic Fog</button>
+            </div>
+          </div>
+
+          <div class="install-command-box">
+            <code id="install-cmd">cargo install --git https://github.com/abderrahimebelazreg/xod</code>
+            <button class="btn-copy" id="copy-install-btn" data-cmd="cargo install --git https://github.com/abderrahimebelazreg/xod" title="Copy to clipboard">
+              Copy &boxplus;
+            </button>
+          </div>
+        </div>
+
+        <div class="mockup-window" id="mock-code-view">
+          <div class="mockup-topbar">
+            <div class="mockup-dots">
+              <i></i><i></i><i></i>
+            </div>
+            <div class="mockup-file">~/projects/xod/src/main.rs</div>
+            <div class="mockup-status">NORMAL MODE</div>
+          </div>
+          <div class="mockup-body">
+            <div class="code-line"><span class="line-no">01</span><span class="code-content"><span class="c-kw">use</span> iced::{Application, Command, Element, Settings};</span></div>
+            <div class="code-line"><span class="line-no">02</span><span class="code-content"><span class="c-kw">use</span> xod_core::{Buffer, Mode, Theme};</span></div>
+            <div class="code-line"><span class="line-no">03</span><span class="code-content"></span></div>
+            <div class="code-line"><span class="line-no">04</span><span class="code-content"><span class="c-comment">// Launch XOD with zero-latency modal buffers</span></span></div>
+            <div class="code-line"><span class="line-no">05</span><span class="code-content"><span class="c-kw">pub fn</span> <span class="c-fn">main</span>() -&gt; iced::Result {</span></div>
+            <div class="code-line"><span class="line-no">06</span><span class="code-content">    <span class="c-kw">let</span> config = EditorConfig::default()</span></div>
+            <div class="code-line"><span class="line-no">07</span><span class="code-content">        .<span class="c-fn">with_theme</span>(Theme::<span class="c-str">"Obsidian"</span>)</span></div>
+            <div class="code-line"><span class="line-no">08</span><span class="code-content">        .<span class="c-fn">with_telemetry</span>(<span class="c-kw">false</span>);</span></div>
+            <div class="code-line"><span class="line-no">09</span><span class="code-content">    </span></div>
+            <div class="code-line"><span class="line-no">10</span><span class="code-content">    XodEditor::<span class="c-fn">run</span>(Settings {</span></div>
+            <div class="code-line"><span class="line-no">11</span><span class="code-content">        antialiasing: <span class="c-kw">true</span>,</span></div>
+            <div class="code-line"><span class="line-no">12</span><span class="code-content">        ..Settings::default()</span></div>
+            <div class="code-line"><span class="line-no">13</span><span class="code-content">    })</span></div>
+            <div class="code-line"><span class="line-no">14</span><span class="code-content">}</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 04: Start Crafting (CTA) -->
+    <section class="section-wrapper reveal" id="start">
+      <div class="cta-box">
+        <div class="hud-tag">
+          <span class="bullet">&block;</span>
+          <span>04 / GET STARTED &middot; FREE &amp; OPEN SOURCE</span>
+        </div>
+        <h2>Start crafting.</h2>
+        <p>Pick the application that fits your workflow, or clone the repositories and build from source.</p>
+
+        <div class="cta-cards">
+          <div class="cta-card-item">
+            <div class="hud-tag">COMPILED PACKAGES</div>
+            <h4>Standalone Binaries</h4>
+            <p>Ready-to-run release packages for Linux (.AppImage, .deb), macOS (.dmg), and Windows with signed release tags.</p>
+            <a class="btn-solid" href="#apps">
+              <span>View download links &darr;</span>
+            </a>
+          </div>
+
+          <div class="cta-card-item">
+            <div class="hud-tag">DEVELOPER SOURCE</div>
+            <h4>Build from Source</h4>
+            <p>Clone the public repositories, customize keybindings, write plugins, or submit issues on GitHub.</p>
+            <a class="btn-ghost" href="https://github.com/abderrahimebelazreg" target="_blank" rel="noreferrer">
+              <span>Visit GitHub Organization &nearr;</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer-pro">
+    <div class="footer-inner">
+      <div class="footer-brand-col">
+        <div class="brand">
+          <img src="assets/logoOfwebsite.png" alt="Studio Logo" class="brand-logo-img">
+          <div class="brand-title">STUDIO <span>/ APPS</span></div>
+        </div>
+        <p>
+          Open-source, high-efficiency desktop tools built for artists, developers, and makers. Designed for focus, speed, and durability.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h5>Applications</h5>
+        <ul class="footer-links" id="footer-apps-list">
+          <li><a href="#apps">XOD Editor</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>Resources</h5>
+        <ul class="footer-links">
+          <li><a href="https://github.com/abderrahimebelazreg" target="_blank" rel="noreferrer">GitHub Organization &nearr;</a></li>
+          <li><a href="admin.html">Admin Dashboard &nearr;</a></li>
+          <li><a href="#features">Design Principles</a></li>
+          <li><a href="#spotlight">XOD Documentation</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>&copy; <span id="year">2026</span> Studio / Apps. Built by makers, for makers.</div>
+      <div class="footer-status">
+        <span class="badge-dot"></span>
+        <span>ALL SYSTEMS OPERATIONAL &middot; POWERED BY SQLITE</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Container -->
+  <div class="toast-hud" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

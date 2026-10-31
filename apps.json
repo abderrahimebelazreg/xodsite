@@ -1,0 +1,24 @@
+[
+  {
+    "id": 4,
+    "name": "XOD",
+    "title": "Model GUI text editor",
+    "description": "GG",
+    "icon": "assets/uploads/1793447463480-xod.png",
+    "github_url": "https://github.com/abderrahimebelazreg/xod",
+    "download_url": "https://github.com/abderrahimebelazreg/xod/archive/refs/heads/main.zip",
+    "license": "MIT",
+    "version": "v0.1.0",
+    "tags": [
+      "RUST"
+    ],
+    "category": "editor",
+    "featured": true,
+    "highlights": [
+      "<20ms startup",
+      "fast",
+      "pure rust"
+    ],
+    "created_at": "2026-10-31 11:51:03"
+  }
+]

@@ -1,0 +1,795 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090a0d">
+  <title>Studio / Apps — Admin Control Panel</title>
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Admin specific styles */
+    .admin-container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+      position: relative;
+      z-index: 1;
+    }
+    .admin-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .admin-title-box h1 {
+      font-size: clamp(28px, 4vw, 42px);
+      letter-spacing: -0.03em;
+      font-weight: 700;
+      color: var(--ink-strong);
+      margin-top: 8px;
+    }
+    .admin-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+    .admin-stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .admin-stat-card .val {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--ink-strong);
+      font-family: var(--font-mono);
+    }
+    .admin-stat-card .lbl {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .admin-layout {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 32px;
+      align-items: flex-start;
+    }
+    .admin-card {
+      background: var(--bg-card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 28px;
+    }
+    .admin-card-title {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--ink-strong);
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    /* Form controls */
+    .form-group {
+      margin-bottom: 18px;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .form-label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .form-label span.req {
+      color: #f87171;
+    }
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      background: var(--bg-deep);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px 14px;
+      color: var(--ink);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      outline: none;
+      transition: all 0.2s var(--ease);
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--line-highlight);
+      background: #111218;
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.04);
+    }
+    .form-select {
+      background-color: var(--bg-deep);
+      cursor: pointer;
+    }
+    .form-textarea {
+      resize: vertical;
+      min-height: 80px;
+      line-height: 1.5;
+    }
+    .form-hint {
+      font-size: 10px;
+      color: var(--faint);
+      font-family: var(--font-mono);
+      margin-top: 4px;
+    }
+    /* Icon Upload Area */
+    .icon-upload-box {
+      border: 1px dashed var(--line-strong);
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.015);
+      cursor: pointer;
+      transition: all 0.2s var(--ease);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .icon-upload-box:hover {
+      border-color: var(--line-highlight);
+      background: rgba(255, 255, 255, 0.03);
+    }
+    .icon-preview-thumb {
+      width: 50px;
+      height: 50px;
+      border-radius: 10px;
+      object-fit: cover;
+      background: #181920;
+      border: 1px solid var(--line);
+      flex-shrink: 0;
+    }
+    .icon-upload-text {
+      text-align: left;
+      flex: 1;
+    }
+    .icon-upload-text .prompt {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--ink);
+      margin-bottom: 2px;
+    }
+    .icon-upload-text .subtext {
+      font-size: 10px;
+      color: var(--muted);
+    }
+    /* Checkbox styled */
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      user-select: none;
+      padding: 10px 0;
+    }
+    .checkbox-row input {
+      accent-color: var(--ink);
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+    .checkbox-row span {
+      font-size: 12px;
+      color: var(--ink);
+      font-family: var(--font-mono);
+    }
+    /* Admin app table items */
+    .app-admin-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .app-admin-item {
+      background: var(--bg-raised);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      transition: border-color 0.2s var(--ease);
+    }
+    .app-admin-item:hover {
+      border-color: var(--line-strong);
+    }
+    .app-admin-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+    .app-admin-thumb {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      object-fit: cover;
+      background: #181920;
+      border: 1px solid var(--line);
+      flex-shrink: 0;
+    }
+    .app-admin-meta {
+      min-width: 0;
+    }
+    .app-admin-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink-strong);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .app-admin-sub {
+      font-size: 11px;
+      color: var(--muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 300px;
+      margin-top: 2px;
+    }
+    .app-admin-tags {
+      display: flex;
+      gap: 6px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .app-admin-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .btn-action-edit {
+      padding: 6px 12px;
+      border: 1px solid var(--line-strong);
+      border-radius: 5px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--ink);
+      transition: all 0.2s var(--ease);
+    }
+    .btn-action-edit:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--line-highlight);
+    }
+    .btn-action-del {
+      padding: 6px 12px;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      border-radius: 5px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: #fca5a5;
+      transition: all 0.2s var(--ease);
+    }
+    .btn-action-del:hover {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: #ef4444;
+    }
+    @media (max-width: 900px) {
+      .admin-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="ambient-mesh" aria-hidden="true"></div>
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html" aria-label="Studio Apps Home">
+        <img src="assets/logoOfwebsite.png" alt="Studio Logo" class="brand-logo-img">
+        <div class="brand-title">STUDIO <span>/ ADMIN</span></div>
+      </a>
+
+      <nav class="nav-links">
+        <a class="nav-item" href="index.html">← Back to Site</a>
+        <button class="nav-cta" id="btn-export-sync" title="Export database to apps.json for static GitHub Pages deployment">
+          <span>Sync apps.json</span>
+          <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M11 7A4 4 0 1 1 7 3m0 0L4.5 5.5M7 3l2.5 2.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="admin-container">
+    <div class="admin-header-row">
+      <div class="admin-title-box">
+        <div class="hud-tag">
+          <span class="badge-dot"></span>
+          <span>ADMINISTRATION &middot; SQLITE DATABASE</span>
+        </div>
+        <h1>App Manager &amp; Publisher</h1>
+      </div>
+      <div>
+        <button class="btn-primary" id="btn-new-app-toggle">
+          <span>+ Add New App</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="admin-stats-grid">
+      <div class="admin-stat-card">
+        <span class="lbl">Total Apps</span>
+        <span class="val" id="stat-total-apps">0</span>
+      </div>
+      <div class="admin-stat-card">
+        <span class="lbl">Featured In Hero</span>
+        <span class="val" id="stat-featured-apps">0</span>
+      </div>
+      <div class="admin-stat-card">
+        <span class="lbl">Database Engine</span>
+        <span class="val">SQLite 3</span>
+      </div>
+      <div class="admin-stat-card">
+        <span class="lbl">Sync File</span>
+        <span class="val" style="font-size: 16px; color: #a5f3fc;">apps.json</span>
+      </div>
+    </div>
+
+    <!-- Admin Layout: Left Apps List, Right Editor Form -->
+    <div class="admin-layout">
+      <!-- Published Apps List -->
+      <section class="admin-card">
+        <div class="admin-card-title">
+          <span>Published Apps</span>
+          <span class="hud-tag" id="apps-count-badge">0 REGISTERED</span>
+        </div>
+
+        <div class="app-admin-list" id="apps-list-container">
+          <!-- Populated by JavaScript -->
+          <div style="color: var(--muted); font-size: 12px; font-family: var(--font-mono); padding: 20px 0;">
+            Loading applications from SQLite database...
+          </div>
+        </div>
+      </section>
+
+      <!-- App Form (Create / Edit) -->
+      <section class="admin-card" id="form-section">
+        <div class="admin-card-title">
+          <span id="form-title">Create New App</span>
+          <button class="btn-ghost" id="btn-cancel-edit" style="display: none; padding: 4px 8px; font-size: 9px;">Cancel Edit</button>
+        </div>
+
+        <form id="app-form" autocomplete="off">
+          <input type="hidden" id="field-id" value="">
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="field-name">App Name <span class="req">*</span></label>
+              <input class="form-input" type="text" id="field-name" placeholder="e.g. XOD" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="field-version">Version</label>
+              <input class="form-input" type="text" id="field-version" placeholder="e.g. v0.1.0">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="field-title">Title / Tagline</label>
+            <input class="form-input" type="text" id="field-title" placeholder="e.g. Modal GUI text editor">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="field-category">Category</label>
+              <select class="form-select" id="field-category">
+                <option value="desktop">Desktop Application</option>
+                <option value="utility">Utility / Tool</option>
+                <option value="developer">Developer Tool</option>
+                <option value="editor">Text / Code Editor</option>
+                <option value="design">Design / Creative</option>
+                <option value="audio">Audio / Video</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="field-license">License</label>
+              <input class="form-input" type="text" id="field-license" placeholder="e.g. MIT, Apache 2.0, GPLv3">
+            </div>
+          </div>
+
+          <!-- App Icon Upload -->
+          <div class="form-group">
+            <label class="form-label">App Icon (Upload or File Path)</label>
+            <div class="icon-upload-box" id="icon-dropzone">
+              <img class="icon-preview-thumb" id="icon-preview" src="assets/xod.png" alt="Icon Preview">
+              <div class="icon-upload-text">
+                <div class="prompt">Click or drag image to upload icon</div>
+                <div class="subtext">Supports PNG, SVG, JPG, WebP (Square recommended)</div>
+              </div>
+              <input type="file" id="field-icon-file" accept="image/*" style="display: none;">
+            </div>
+            <div style="margin-top: 8px;">
+              <input class="form-input" type="text" id="field-icon-path" placeholder="Or enter icon path (e.g. assets/xod.png)">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="field-github">GitHub Repository URL</label>
+            <input class="form-input" type="url" id="field-github" placeholder="https://github.com/username/repository">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="field-download">Direct Download URL <span style="color:var(--faint); font-weight: normal;">(Optional)</span></label>
+            <input class="form-input" type="url" id="field-download" placeholder="e.g. Link to .AppImage, .deb, .exe, or release page">
+            <div class="form-hint">If left empty, visitors will be directed to the repository Releases page.</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="field-description">Description</label>
+            <textarea class="form-textarea" id="field-description" placeholder="A concise, compelling overview of what your app does and who it's for."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="field-tags">Tags <span style="color:var(--faint); font-weight: normal;">(Comma separated)</span></label>
+            <input class="form-input" type="text" id="field-tags" placeholder="e.g. RUST, ICED, MODAL, LINUX">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="field-highlights">Key Highlights / Bullets <span style="color:var(--faint); font-weight: normal;">(One per line)</span></label>
+            <textarea class="form-textarea" id="field-highlights" placeholder="&lt; 20ms startup&#10;GPU accelerated&#10;Zero telemetry&#10;Pure Rust"></textarea>
+          </div>
+
+          <label class="checkbox-row">
+            <input type="checkbox" id="field-featured">
+            <span>Feature this app in Hero Spotlight &amp; Topbar Dock</span>
+          </label>
+
+          <div style="display: flex; gap: 12px; margin-top: 24px;">
+            <button type="submit" class="btn-solid" style="padding: 12px 24px; font-size: 11px;" id="btn-submit-form">
+              <span>Save &amp; Publish App</span>
+            </button>
+            <button type="button" class="btn-ghost" id="btn-reset-form" style="padding: 12px 18px; font-size: 11px;">
+              <span>Clear</span>
+            </button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </main>
+
+  <!-- HUD Toast -->
+  <div class="toast-hud" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    // State
+    let apps = [];
+    let currentEditingId = null;
+    let uploadedIconBase64 = null;
+    let uploadedIconName = null;
+
+    // Elements
+    const appsListContainer = document.querySelector("#apps-list-container");
+    const appForm = document.querySelector("#app-form");
+    const formTitle = document.querySelector("#form-title");
+    const btnCancelEdit = document.querySelector("#btn-cancel-edit");
+    const btnSubmitForm = document.querySelector("#btn-submit-form");
+    const btnResetForm = document.querySelector("#btn-reset-form");
+    const btnExportSync = document.querySelector("#btn-export-sync");
+    const btnNewAppToggle = document.querySelector("#btn-new-app-toggle");
+    const toast = document.querySelector("#toast");
+
+    const statTotalApps = document.querySelector("#stat-total-apps");
+    const statFeaturedApps = document.querySelector("#stat-featured-apps");
+    const appsCountBadge = document.querySelector("#apps-count-badge");
+
+    // Fields
+    const fieldId = document.querySelector("#field-id");
+    const fieldName = document.querySelector("#field-name");
+    const fieldVersion = document.querySelector("#field-version");
+    const fieldTitle = document.querySelector("#field-title");
+    const fieldCategory = document.querySelector("#field-category");
+    const fieldLicense = document.querySelector("#field-license");
+    const fieldIconFile = document.querySelector("#field-icon-file");
+    const fieldIconPath = document.querySelector("#field-icon-path");
+    const iconDropzone = document.querySelector("#icon-dropzone");
+    const iconPreview = document.querySelector("#icon-preview");
+    const fieldGithub = document.querySelector("#field-github");
+    const fieldDownload = document.querySelector("#field-download");
+    const fieldDescription = document.querySelector("#field-description");
+    const fieldTags = document.querySelector("#field-tags");
+    const fieldHighlights = document.querySelector("#field-highlights");
+    const fieldFeatured = document.querySelector("#field-featured");
+
+    function notify(msg) {
+      if (!toast) return;
+      toast.innerHTML = msg;
+      toast.classList.add("show");
+      clearTimeout(notify.timer);
+      notify.timer = setTimeout(() => toast.classList.remove("show"), 2800);
+    }
+
+    const escapeHTML = (val = "") => String(val).replace(/[&<>"']/g, c => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+    }[c]));
+
+    // Icon Upload Trigger & Preview
+    iconDropzone.addEventListener("click", () => fieldIconFile.click());
+    
+    fieldIconFile.addEventListener("change", e => {
+      const file = e.target.files[0];
+      if (file) {
+        uploadedIconName = file.name;
+        const reader = new FileReader();
+        reader.onload = ev => {
+          uploadedIconBase64 = ev.target.result;
+          iconPreview.src = uploadedIconBase64;
+          fieldIconPath.value = file.name;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    fieldIconPath.addEventListener("input", e => {
+      if (e.target.value.trim() && !uploadedIconBase64) {
+        iconPreview.src = e.target.value.trim();
+      }
+    });
+
+    // Drag and drop icon
+    iconDropzone.addEventListener("dragover", e => {
+      e.preventDefault();
+      iconDropzone.style.borderColor = "var(--line-highlight)";
+    });
+    iconDropzone.addEventListener("dragleave", () => {
+      iconDropzone.style.borderColor = "var(--line-strong)";
+    });
+    iconDropzone.addEventListener("drop", e => {
+      e.preventDefault();
+      iconDropzone.style.borderColor = "var(--line-strong)";
+      const file = e.dataTransfer.files[0];
+      if (file && file.type.startsWith("image/")) {
+        uploadedIconName = file.name;
+        const reader = new FileReader();
+        reader.onload = ev => {
+          uploadedIconBase64 = ev.target.result;
+          iconPreview.src = uploadedIconBase64;
+          fieldIconPath.value = file.name;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Fetch and render apps
+    async function loadApps() {
+      try {
+        const res = await fetch("/api/apps");
+        if (!res.ok) throw new Error("Could not connect to /api/apps");
+        const data = await res.json();
+        apps = data.apps || [];
+        renderAppsList();
+      } catch (err) {
+        console.warn("Could not load from API, trying apps.json:", err);
+        try {
+          const res = await fetch("apps.json");
+          apps = await res.json();
+          renderAppsList();
+        } catch (e) {
+          appsListContainer.innerHTML = `<div style="color: #fca5a5; font-size: 12px; font-family: var(--font-mono);">Failed to load apps. Ensure server.js is running: <code>node server.js</code></div>`;
+        }
+      }
+    }
+
+    function renderAppsList() {
+      statTotalApps.textContent = apps.length;
+      statFeaturedApps.textContent = apps.filter(a => a.featured).length;
+      appsCountBadge.textContent = `${apps.length} REGISTERED`;
+
+      if (!apps.length) {
+        appsListContainer.innerHTML = `
+          <div style="text-align: center; padding: 40px; color: var(--muted); font-size: 12px; font-family: var(--font-mono); border: 1px dashed var(--line); border-radius: 8px;">
+            No applications found in the database. Use the form on the right to add your first app!
+          </div>
+        `;
+        return;
+      }
+
+      appsListContainer.innerHTML = apps.map(app => {
+        const tagsPills = (Array.isArray(app.tags) ? app.tags : (app.tags || '').split(',').map(t => t.trim()))
+          .filter(Boolean)
+          .map(t => `<span class="tag-pill">${escapeHTML(t)}</span>`)
+          .join("");
+
+        return `
+          <div class="app-admin-item" id="item-${app.id}">
+            <div class="app-admin-left">
+              <img class="app-admin-thumb" src="${escapeHTML(app.icon || 'assets/xod.png')}" alt="" onerror="this.src='assets/xod-fallback.svg'">
+              <div class="app-admin-meta">
+                <div class="app-admin-name">
+                  <span>${escapeHTML(app.name)}</span>
+                  ${app.version ? `<span class="card-badge standard" style="font-size:7px;">${escapeHTML(app.version)}</span>` : ""}
+                  ${app.featured ? `<span class="card-badge live" style="font-size:7px;">★ FEATURED</span>` : ""}
+                </div>
+                <div class="app-admin-sub">${escapeHTML(app.title || app.description || '')}</div>
+                <div class="app-admin-tags">
+                  <span class="tag-pill" style="color:var(--accent-cyan);">${escapeHTML(app.category || 'desktop')}</span>
+                  ${app.license ? `<span class="tag-pill">${escapeHTML(app.license)}</span>` : ""}
+                  ${tagsPills}
+                </div>
+              </div>
+            </div>
+
+            <div class="app-admin-actions">
+              <button class="btn-action-edit" onclick="editApp(${app.id})">Edit</button>
+              <button class="btn-action-del" onclick="deleteApp(${app.id}, '${escapeHTML(app.name)}')">Delete</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // Edit app
+    window.editApp = function(id) {
+      const app = apps.find(a => a.id === id);
+      if (!app) return;
+
+      currentEditingId = id;
+      fieldId.value = app.id;
+      fieldName.value = app.name || "";
+      fieldVersion.value = app.version || "";
+      fieldTitle.value = app.title || "";
+      fieldCategory.value = (app.category || "desktop").toLowerCase();
+      fieldLicense.value = app.license || "";
+      fieldIconPath.value = app.icon || "";
+      iconPreview.src = app.icon || "assets/xod-fallback.svg";
+      uploadedIconBase64 = null;
+      uploadedIconName = null;
+      fieldGithub.value = app.github_url || "";
+      fieldDownload.value = app.download_url || "";
+      fieldDescription.value = app.description || "";
+      fieldTags.value = Array.isArray(app.tags) ? app.tags.join(", ") : (app.tags || "");
+      fieldHighlights.value = Array.isArray(app.highlights) ? app.highlights.join("\n") : (app.highlights || "");
+      fieldFeatured.checked = Boolean(app.featured);
+
+      formTitle.textContent = `Edit App: ${app.name}`;
+      btnSubmitForm.innerHTML = `<span>Update "${escapeHTML(app.name)}"</span>`;
+      btnCancelEdit.style.display = "inline-flex";
+
+      document.querySelector("#form-section").scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+
+    // Reset Form
+    function resetForm() {
+      currentEditingId = null;
+      fieldId.value = "";
+      appForm.reset();
+      iconPreview.src = "assets/xod.png";
+      uploadedIconBase64 = null;
+      uploadedIconName = null;
+      formTitle.textContent = "Create New App";
+      btnSubmitForm.innerHTML = `<span>Save &amp; Publish App</span>`;
+      btnCancelEdit.style.display = "none";
+    }
+
+    btnResetForm.addEventListener("click", resetForm);
+    btnCancelEdit.addEventListener("click", resetForm);
+    btnNewAppToggle.addEventListener("click", () => {
+      resetForm();
+      document.querySelector("#form-section").scrollIntoView({ behavior: "smooth", block: "start" });
+      fieldName.focus();
+    });
+
+    // Submit form (Create or Update)
+    appForm.addEventListener("submit", async e => {
+      e.preventDefault();
+
+      const payload = {
+        name: fieldName.value.trim(),
+        version: fieldVersion.value.trim(),
+        title: fieldTitle.value.trim(),
+        category: fieldCategory.value,
+        license: fieldLicense.value.trim(),
+        icon: fieldIconPath.value.trim() || "assets/xod-fallback.svg",
+        icon_data: uploadedIconBase64,
+        icon_name: uploadedIconName,
+        github_url: fieldGithub.value.trim(),
+        download_url: fieldDownload.value.trim(),
+        description: fieldDescription.value.trim(),
+        tags: fieldTags.value.trim(),
+        highlights: fieldHighlights.value.trim(),
+        featured: fieldFeatured.checked ? 1 : 0
+      };
+
+      if (!payload.name) {
+        alert("App name is required");
+        return;
+      }
+
+      const isUpdate = Boolean(currentEditingId);
+      const url = isUpdate ? `/api/apps/${currentEditingId}` : "/api/apps";
+      const method = isUpdate ? "PUT" : "POST";
+
+      try {
+        btnSubmitForm.disabled = true;
+        btnSubmitForm.innerHTML = `<span>Saving...</span>`;
+
+        const res = await fetch(url, {
+          method,
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        if (!res.ok || !data.ok) throw new Error(data.error || "Failed to save app");
+
+        notify(isUpdate ? `App <strong>${escapeHTML(payload.name)}</strong> updated!` : `App <strong>${escapeHTML(payload.name)}</strong> published!`);
+        resetForm();
+        await loadApps();
+      } catch (err) {
+        alert("Error saving app: " + err.message);
+      } finally {
+        btnSubmitForm.disabled = false;
+        btnSubmitForm.innerHTML = `<span>Save &amp; Publish App</span>`;
+      }
+    });
+
+    // Delete app
+    window.deleteApp = async function(id, name) {
+      if (!confirm(`Are you sure you want to delete "${name}" from the database?`)) return;
+
+      try {
+        const res = await fetch(`/api/apps/${id}`, { method: "DELETE" });
+        const data = await res.json();
+        if (!res.ok || !data.ok) throw new Error(data.error || "Delete failed");
+
+        notify(`App <strong>${escapeHTML(name)}</strong> was removed.`);
+        if (currentEditingId === id) resetForm();
+        await loadApps();
+      } catch (err) {
+        alert("Error deleting app: " + err.message);
+      }
+    };
+
+    // Force export sync
+    btnExportSync.addEventListener("click", async () => {
+      try {
+        btnExportSync.disabled = true;
+        const res = await fetch("/api/export", { method: "POST" });
+        const data = await res.json();
+        if (data.ok) {
+          notify("Database synced to <strong>apps.json</strong>!");
+        } else {
+          notify("Sync failed: " + data.error);
+        }
+      } catch (e) {
+        notify("Could not connect to server for export");
+      } finally {
+        btnExportSync.disabled = false;
+      }
+    });
+
+    // Initialize
+    loadApps();
+  </script>
+</body>
+</html>

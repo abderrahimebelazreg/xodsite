@@ -1,0 +1,12 @@
+{
+  "name": "indie-apps-hub",
+  "version": "1.0.0",
+  "description": "Studio / Apps — Native desktop software hub with SQLite management and GitHub release resolution",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": ["apps", "portfolio", "sqlite", "desktop", "rust"],
+  "author": "abderrahimebelazreg",
+  "license": "MIT"
+}
