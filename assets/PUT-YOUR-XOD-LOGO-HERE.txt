@@ -1,0 +1,1 @@
+Copy your original XOD logo into this folder and name it xod.png. The website already references assets/xod.png.
